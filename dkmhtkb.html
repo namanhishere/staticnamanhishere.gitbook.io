@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Nhập TKB HCMUT</title>
+    <title>Tuyển sinh 10</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -160,7 +160,7 @@ return startString+eventString+endString
 
                 let tietInfo = {
                     thu : dayMap(buoiHocRaw[0]),
-                    tiet:buoiHocRaw[1].split("").filter(v=> v!=" ").map((v,i)=> v=="-"? "99999":i+1).filter(v => v!="99999"),
+                    tiet:buoiHocRaw[1].split(" ").map((v,i)=> v=="-"? "99999":i+1).filter(v => v!="99999"),    
                     phongHoc:buoiHocRaw[2],
                     cs:buoiHocRaw[3],
                     tuanHoc:buoiHocRaw[5].split("").filter(v=> v!=" ").map((v,i)=> v=="-"? "99999":i+1).filter(v => v!="99999"),
@@ -203,7 +203,7 @@ return startString+eventString+endString
             listTatCaMon.push(currentClass)
         }
 
-        console.log(eventList)
+        console.log(listTatCaMon)
 
         let eventCreated = createEventPromise(eventList)
 
