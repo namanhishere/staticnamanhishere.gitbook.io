@@ -25,7 +25,7 @@
         <div style="margin: 3%;"></div>
         <div class="card">
             <h4 class="card-title">Nhập dữ liệu thời khóa biểu</h4>
-            <textarea class="form-input" id="text-box"></textarea>
+            <textarea class="form-control" id="text-box" placeholder="Điền dữ liệu của bạn vào đây" row="10"></textarea>
             <div style="margin: 1%;"></div>
             <div class="btn-primary btn" id="verifybtn">Nhập thời khóa biểu</div>
         </div>
@@ -49,9 +49,7 @@
 
 
     // var cal = ics();
-    const subjectPattern = /^(\d+[A-Z]{2}\d{4}) - ([^\d]+)/;
-    const timeAndLocationPattern = /(Thứ [[2-7]|Chủ nhật)    ([\-0-9 ]+)    ([A-Z-0-9]+).{3,4}(.+)/;
-    const weekPatternRegex = /(\d[-\d]*)$/;
+    const subjectPattern = /^\d+([A-Z]{2}\d{4}) - (.+)[0-9].[0-9]/;
     
 
 
@@ -83,16 +81,26 @@
         }
     }
     function createEventPromise(event){
+        //copy from BKalendar
+        let countEvent = 0
         let startString =`BEGIN:VCALENDAR
 VERSION:2.0
-CALSCALE:GREGORIAN
-PRODID:my-unique-product-id
-METHOD:PUBLISH
-X-PUBLISHED-TTL:PT1H\n`
+BEGIN:VTIMEZONE
+TZID:Asia/Ho_Chi_Minh
+TZURL:http://tzurl.org/zoneinfo-outlook/Asia/Ho_Chi_Minh
+X-LIC-LOCATION:Asia/Ho_Chi_Minh
+BEGIN:STANDARD
+TZOFFSETFROM:+0700
+TZOFFSETTO:+0700
+TZNAME:+07
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE\n`
 let eventString = ""
 event.forEach(eve => {
+    countEvent ++
     eventString  = eventString+ `BEGIN:VEVENT
-UID:${eve.title +"dkh1"}
+UID:${eve.title +"dkh1"+countEvent}
 SUMMARY:${eve.title}
 DTSTAMP:20050101T000000Z
 DTSTART:${eve.start[0]}${addZero(eve.start[1])}${addZero(eve.start[2])}T${addZero(eve.start[3]-8)}${addZero(eve.start[4])}00Z
@@ -152,11 +160,12 @@ return startString+eventString+endString
 
             // console.log()
             while(lines[index+3+countSoTiet ].match(subjectPattern) == null ){
-                if(lines[index+4+countSoTiet].startsWith("Tổng số tín chỉ đăng ký:") ||lines[index+4+countSoTiet] == ""|| lines[index+4+countSoTiet] == " "||lines[index+4+countSoTiet] == "\t") break
+                
+                if(lines[index+4+countSoTiet].startsWith("Tổng số tín chỉ đăng ký:")) break
                 let buoiHocRaw = (lines[index+3+countSoTiet]).split("\t")
                 // console.log(typeof buoiHocRaw[0])
+                // console.log(lines[index+3+countSoTiet])
                 if(!buoiHocRaw[0] || buoiHocRaw[0] == "" || buoiHocRaw[0]==undefined || buoiHocRaw[0]==null) break
-
 
                 let tietInfo = {
                     thu : dayMap(buoiHocRaw[0]),
