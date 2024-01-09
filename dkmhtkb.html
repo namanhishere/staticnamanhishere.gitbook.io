@@ -100,7 +100,7 @@ let eventString = ""
 event.forEach(eve => {
     countEvent ++
     eventString  = eventString+ `BEGIN:VEVENT
-UID:${eve.title +"dkh1"+countEvent}
+UID:${"dkh1"+countEvent}
 SUMMARY:${eve.title}
 DTSTAMP:20050101T000000Z
 DTSTART:${eve.start[0]}${addZero(eve.start[1])}${addZero(eve.start[2])}T${addZero(eve.start[3]-8)}${addZero(eve.start[4])}00Z
